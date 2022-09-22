@@ -5,11 +5,12 @@
 #include <vector>
 #include <mutex>
 #include <condition_variable>
+#include <queue>
 
 class SharedBuffer {
 private:
 
-    std::vector<std::string> data;
+    std::queue<std::string> data;
 
     std::mutex sharedLock;
 

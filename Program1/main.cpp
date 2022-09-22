@@ -2,6 +2,7 @@
 #include <thread>
 #include <string>
 #include <signal.h>
+#include <queue>
 
 #include "SharedBuffer.h"
 #include "DataHelper.h"
@@ -43,7 +44,7 @@ int main(int argc, char **argv) {
 
     std::thread t2([&sh, &address, &port]() {
 
-        std::vector<int> queryToSend;
+        std::queue<int> queryToSend;
 
         TCPSender client(address, port);
 
@@ -62,7 +63,7 @@ int main(int argc, char **argv) {
             if (data.size() != 0) {
                 std::cout << data << "\n";
 
-                queryToSend.push_back(DataHelper::countNumsSum(data));
+                queryToSend.push(DataHelper::countNumsSum(data));
             }
 
             while (queryToSend.size() != 0) {
@@ -79,7 +80,7 @@ int main(int argc, char **argv) {
                         break;
                     }
                 } else {
-                    queryToSend.erase(queryToSend.begin());
+                    queryToSend.pop();
                 }
             }
         }

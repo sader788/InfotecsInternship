@@ -7,7 +7,7 @@ SharedBuffer::SharedBuffer() {
 void SharedBuffer::writeBuffer(const std::string &userInput) {
 
     sharedLock.lock();
-    data.emplace_back(userInput);
+    data.emplace(userInput);
     sharedLock.unlock();
     cv.notify_all();
 }
@@ -25,7 +25,7 @@ std::string SharedBuffer::readBuffer() {
     }
 
     result = data.front();
-    data.erase(data.begin());
+    data.pop();
 
     return result;
 }
